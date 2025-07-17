@@ -25,4 +25,564 @@ execute:
     
 ---
 
-### Paste in a template
+
+```{python}
+import pandas as pd 
+import numpy as np
+from lets_plot import *
+# add the additional libraries you need to import for ML here
+
+LetsPlot.setup_html(isolated_frame=True)
+```
+
+Load data set 
+
+```{python}
+
+df = pd.read_csv("StarWars.csv", encoding='cp1252')
+
+df.head()
+
+```
+
+```
+
+## Elevator pitch
+_A SHORT (2-3 SENTENCES) PARAGRAPH THAT `DESCRIBES KEY INSIGHTS` TAKEN FROM METRICS IN THE PROJECT RESULTS THINK TOP OR MOST IMPORTANT RESULTS._ (Note: this is not a summary of the project, but a summary of the results.)
+
+_A Client has requested this analysis and this is your one shot of what you would say to your boss in a 2 min elevator ride before he takes your report and hands it to the client._
+
+## QUESTION|TASK 1
+
+__Shorten the column names and clean them up for easier use with pandas.__ Provide a table or list that exemplifies how you fixed the names. 
+
+The machine learning shows that this data using star wars to predict customers salary is not very effective. only predicting each respondants income with 67% accuracy it is only a little more accurate than a coin flip. 
+
+## Renaming Columns
+
+We shortened and standardized all column names at once using direct assignment for clarity and ease of use.
+
+```{python}
+# Show original columns (uncomment to check)
+# df.columns.tolist()
+```
+
+Rename all columns
+
+```{python}
+df.columns = [
+    'ID',
+    'Seen_Any',
+    'Is_Fan',
+    'Seen_Ep1',
+    'Seen_Ep2',
+    'Seen_Ep3',
+    'Seen_Ep4',
+    'Seen_Ep5',
+    'Seen_Ep6',
+    'Rank_Ep1',
+    'Rank_Ep2',
+    'Rank_Ep3',
+    'Rank_Ep4',
+    'Rank_Ep5',
+    'Rank_Ep6',
+    'Fav_Han_Solo',
+    'Fav_Luke_Skywalker',
+    'Fav_Princess_Leia',
+    'Fav_Anakin_Skywalker',
+    'Fav_Obi_Wan_Kenobi',
+    'Fav_Epmeror_Palpatine',
+    'Fav_Darth_Vader',
+    'Fav_Lando_Calrissian',
+    'Fav_Boba_Fett',
+    'Fav_C_3PO',
+    'Fav_R2_D2',
+    'Fav_Jar_Jar_Binks',
+    'Fav_Padme_Amidala',
+    'Fav_Yoda',
+    'Shot_First',
+    'Fam_Expanded_Universe',
+    'Fan_Expanded_Universe',
+    'Star_Trek',
+    'Gender',
+    'Age',
+    'Income',
+    'Education',
+    'Location'
+]
+
+df.drop("ID", axis=1, inplace = True)
+df.drop(0, axis=0, inplace=True)
+
+
+
+```
+
+
+
+
+## QUESTION|TASK 2
+
+__Clean and format the data so that it can be used in a machine learning model.__ As you format the data, you should complete each item listed below. In your final report provide example(s) of the reformatted data with a short description of the changes made.  
+    a. Filter the dataset to respondents that have seen at least one film  
+    a. Create a new column that converts the age ranges to a single number. Drop the age range categorical column  
+    a. Create a new column that converts the education groupings to a single number. Drop the school categorical column  
+    a. Create a new column that converts the income ranges to a single number. Drop the income range categorical column  
+    a. Create your target (also known as “y” or “label”) column based on the new income range column  
+    a. One-hot encode all remaining categorical columns   
+
+Changed all data types to either bool or int. this way I can use it in the machine learning.
+
+```{python}
+seen = df.query("Seen_Any == 'Yes'")
+graph = seen.copy()
+seen.head()
+
+seen.Age.value_counts(dropna=False)
+
+
+conditions = [
+  seen["Age"] == "18-29",
+  seen["Age"] == "30-44",
+  seen["Age"] == "45-60",
+  seen["Age"] == "> 60",
+
+]
+
+choices = [
+  1,2,3,4
+]
+
+seen["Age"] = np.select(conditions,choices,default=np.nan)
+
+
+
+seen.Age.value_counts(dropna=False)
+
+
+
+conditions = [
+  seen["Education"] == "Less than high school degree",
+  seen["Education"] == "High school degree",
+  seen["Education"] == "Some college or Associate degree",
+  seen["Education"] == "Bachelor degree",
+  seen["Education"] == "Graduate degree",
+
+]
+
+choices = [
+  1,2,3,4,5
+]
+
+seen["Education"] = np.select(conditions,choices,default=np.nan)
+
+
+
+conditions = [
+  seen["Income"] == "$0 - $24,999",
+  seen["Income"] == "$25,000 - $49,999",
+  seen["Income"] == "$50,000 - $99,999",
+  seen["Income"] == "$100,000 - $149,999",
+  seen["Income"] == "$150,000+",
+
+
+
+]
+
+choices = [
+  1,2,3,4,5
+]
+
+seen["Income"] = np.select(conditions,choices,default=np.nan)
+seen = seen.dropna(subset=["Income"])
+
+seen.Income.value_counts(dropna=False)
+
+y = seen["Income"]
+
+
+
+y.value_counts(dropna=False)
+y.head()
+
+
+seen["Seen_Ep1"].replace({"Star Wars: Episode I  The Phantom Menace": 1,
+np.nan: 0},inplace = True)
+
+seen["Seen_Ep2"].replace({"Star Wars: Episode II  Attack of the Clones": 1,
+np.nan: 0},inplace = True)
+
+seen["Seen_Ep3"].replace({"Star Wars: Episode III  Revenge of the Sith": 1,
+np.nan: 0},inplace = True)
+
+seen["Seen_Ep4"].replace({"Star Wars: Episode IV  A New Hope": 1,
+np.nan: 0},inplace = True)
+
+seen["Seen_Ep5"].replace({"Star Wars: Episode V The Empire Strikes Back": 1,
+np.nan: 0},inplace = True)
+
+seen["Seen_Ep6"].replace({"Star Wars: Episode VI Return of the Jedi": 1,
+np.nan: 0},inplace = True)
+
+seen["Rank_Ep1"] = seen["Rank_Ep1"].astype(float)
+seen["Rank_Ep2"] = seen["Rank_Ep2"].astype(float)
+seen["Rank_Ep3"] = seen["Rank_Ep3"].astype(float)
+seen["Rank_Ep4"] = seen["Rank_Ep4"].astype(float)
+seen["Rank_Ep5"] = seen["Rank_Ep5"].astype(float)
+seen["Rank_Ep6"] = seen["Rank_Ep6"].astype(float)
+
+seen.dropna(subset=["Rank_Ep1", "Rank_Ep2", "Rank_Ep3", "Rank_Ep4", "Rank_Ep5", "Rank_Ep6"], inplace = True)
+
+seen.dropna(subset=["Location"], inplace = True)
+def assing_favorability(seen, column):
+
+
+  conditions = [
+    seen[column] == "Very unfavorably",
+    seen[column] == "Somewhat unfavorably",
+    seen[column] == "Neither favorably nor unfavorably (neutral)",
+    seen[column] == "Somewhat favorably",
+    seen[column] == "Very favorably",
+  ]
+  choices = [
+    1,2,3,4,5
+  ]
+  seen[column] = np.select(conditions, choices, np.nan)
+  return seen
+
+
+
+seen = assing_favorability(seen, "Fav_Han_Solo")
+seen = assing_favorability(seen, "Fav_Luke_Skywalker")
+seen = assing_favorability(seen, "Fav_Princess_Leia")
+seen = assing_favorability(seen, "Fav_Anakin_Skywalker")
+seen = assing_favorability(seen, "Fav_Obi_Wan_Kenobi")
+seen = assing_favorability(seen, "Fav_Epmeror_Palpatine")
+seen = assing_favorability(seen, "Fav_Darth_Vader")
+seen = assing_favorability(seen, "Fav_Lando_Calrissian")
+seen = assing_favorability(seen, "Fav_Boba_Fett")
+seen = assing_favorability(seen, "Fav_C_3PO")
+seen = assing_favorability(seen, "Fav_R2_D2")
+seen = assing_favorability(seen, "Fav_Jar_Jar_Binks")
+seen = assing_favorability(seen, "Fav_Padme_Amidala")
+seen = assing_favorability(seen, "Fav_Yoda")
+
+
+
+
+display(seen["Fam_Expanded_Universe"].value_counts(dropna=False))
+
+Encoded = pd.get_dummies(seen, columns= [
+  "Shot_First"
+])
+
+conditions = [
+  seen["Fav_Han_Solo"] == "Very unfavorably",
+
+
+
+
+
+]
+
+choices = [
+  1,2,3,4,5
+]
+
+Encoded = Encoded.assign(
+  
+)
+
+def convert_YN(df,column):
+  conditions = [
+    df[column] == "Yes", 
+    df[column] == "No",
+  ]
+
+  choices = [
+    1,0
+  ]
+
+  df[column] = np.select(conditions,choices, np.nan)
+  return df
+
+
+Encoded = convert_YN(Encoded, "Fam_Expanded_Universe")
+Encoded = convert_YN(Encoded, "Fan_Expanded_Universe")
+Encoded = convert_YN(Encoded, "Star_Trek")
+Encoded = convert_YN(Encoded, "Seen_Any")
+Encoded = convert_YN(Encoded, "Is_Fan")
+Encoded["Gender"] = np.where(
+Encoded['Gender'] == "Male", 1, 0
+)
+
+
+Encoded.Location.value_counts(dropna = False)
+Encoded = pd.get_dummies(data = Encoded, columns=["Location"])
+
+df.head()
+
+
+
+```
+
+
+## QUESTION|TASK 3
+
+__Validate that the data provided on GitHub lines up with the article by recreating 2 of the visuals from the article.__  
+
+The majority of respondants thought the Empire Strikes back was the best star wars movie.
+
+```{python}
+
+from lets_plot import *
+LetsPlot.setup_html()
+
+
+import pandas as pd
+
+summary = pd.DataFrame({
+    'Episode': [
+        'The Phantom Menace',
+        'Attack of the Clones',
+        'Revenge of the Sith',
+        'A New Hope',
+        'Empire Strikes Back',
+        'Return of the Jedi'
+    ],
+    'percentage': [10, 4, 6, 27, 36, 17]
+})
+
+from pandas.api.types import CategoricalDtype
+episode_order = [
+    'The Phantom Menace',
+    'Attack of the Clones',
+    'Revenge of the Sith',
+    'A New Hope',
+    'Empire Strikes Back',
+    'Return of the Jedi'
+]
+summary['Episode'] = summary['Episode'].astype(
+    CategoricalDtype(categories=episode_order, ordered=True)
+)
+
+p = (
+    ggplot(summary, aes(x='Episode', y='percentage')) +
+    geom_bar(stat='identity', fill='#1696d2') +
+    coord_flip() +
+    geom_text(
+        aes(label=summary['percentage'].astype(str) + '%'),
+        ha='left',
+        nudge_y=1.5,
+        size=10
+    ) +
+    labs(
+        title="What's the Best ‘Star Wars’ Movie?",
+        subtitle="Of 471 respondents who have seen all six films",
+        x='',
+        y=''
+    ) +
+    theme_minimal() +
+    theme(
+        axis_text_y=element_text(size=12),
+        axis_text_x=element_text(size=12),
+        plot_title=element_text(size=16),
+        plot_subtitle=element_text(size=12),
+        panel_grid_major=element_blank(),
+        panel_grid_minor=element_blank()
+    )
+)
+p
+```
+
+Most people think that han solo shot first. Also a good amout of respondants were not sure what the question meant.
+
+```{python}
+
+from lets_plot import *
+import pandas as pd
+from pandas.api.types import CategoricalDtype
+
+LetsPlot.setup_html()
+
+shot_cols = [
+    'Shot_First_Han',
+    'Shot_First_Greedo',
+    "Shot_First_I don't understand this question"
+]
+
+
+summary = Encoded[shot_cols].sum().reset_index()
+summary.columns = ['ResponseCode', 'Count']
+
+
+total_respondents = Encoded[shot_cols].any(axis=1).sum()
+
+summary['Percent'] = round(summary['Count'] / total_respondents * 100, 0)
+
+
+summary['PercentLabel'] = summary['Percent'].astype(int).astype(str) + '%'
+
+
+response_labels = {
+    'Shot_First_Han': 'Han',
+    'Shot_First_Greedo': 'Greedo',
+    "Shot_First_I don't understand this question": "I don't understand\n this question"
+}
+
+summary['Response'] = summary['ResponseCode'].map(response_labels)
+
+desired_order = [
+    "I don't understand\n this question",
+    'Greedo',
+    'Han'
+]
+
+response_cat_type = CategoricalDtype(categories=desired_order, ordered=True)
+summary['Response'] = summary['Response'].astype(response_cat_type)
+
+p = (
+    ggplot(summary, aes(y='Response', x='Percent')) +
+    geom_bar(stat='identity', fill='#1696d2') +
+    geom_text(
+        aes(label='PercentLabel'),
+        ha='left',
+        nudge_x=1.5,
+        size=9
+    ) +
+    labs(
+        title="Who Shot First?",
+        subtitle=f"According to {total_respondents} respondents",
+        x='',
+        y=''
+    ) +
+    theme_minimal() +
+    theme(
+        axis_text_y=element_text(size=12),
+        axis_text_x=element_blank(),
+        axis_title_x=element_blank(),
+        axis_title_y=element_blank(),
+        axis_ticks=element_blank(),
+        plot_title=element_text(size=18),
+        plot_subtitle=element_text(size=13),
+        panel_grid_major=element_blank(),
+        panel_grid_minor=element_blank()
+    )
+)
+p
+
+
+```
+
+
+
+## QUESTION|TASK 4
+
+__Build a machine learning model that predicts whether a person makes more than $50k. Describe your model and report the accuracy.__ 
+
+Based on the data in the table this learning model can predict respondants income with 67% accuracy
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+import xgboost as xgb
+from xgboost import XGBClassifier
+
+
+Encoded['Income_over_50k'] = (Encoded['Income'] > 3).astype(int)
+
+X = Encoded.drop(columns=['Income', 'Income_over_50k'])
+y = Encoded['Income_over_50k']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+model = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test,y_pred)
+print(accuracy)
+
+
+
+
+
+
+
+```
+
+---
+
+## STRETCH QUESTION|TASK 1
+
+__Build a machine learning model that predicts whether a person makes more than $50k. With accuracy of at least 65%. Describe your model and report the accuracy.__
+
+_type your results and analysis here_
+
+```{python}
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+import xgboost as xgb
+from xgboost import XGBClassifier
+
+
+Encoded['Income_over_50k'] = (Encoded['Income'] > 3).astype(int)
+
+X = Encoded.drop(columns=['Income', 'Income_over_50k'])
+y = Encoded['Income_over_50k']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+model = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test,y_pred)
+print(accuracy)
+
+
+
+```
+
+
+## STRETCH QUESTION|TASK 2
+
+__Validate the data provided on GitHub lines up with the article by recreating a 3rd visual from the article.__
+
+_type your results and analysis here_
+
+```{python}
+# Include and execute your code here
+
+
+```
+
+
+## STRETCH QUESTION|TASK 3
+
+__Create a new column that converts the location groupings to a single number. Drop the location categorical column.__  
+
+_type your results and analysis here_
+
+```{python}
+# Include and execute your code here
+
+
+```
+
+---
+
