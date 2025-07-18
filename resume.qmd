@@ -9,6 +9,10 @@ Accountant, Financial Analyist, Data Science
 <a href="https://docs.google.com/document/d/1Hg1M4j8iGkRUvvMjZ-6G9dYgAguZ4pyu/edit?usp=drive_link&ouid=104545478070412040670&rtpof=true&sd=true">Tanner_Hamblin_Resume</a>
 </div>
 
+<div id="webaddress">
+<a href="https://www.linkedin.com/in/tanner-hamblin-a07443231/">Tanner_Hamblin_LinkedIn</a>
+</div>
+
 
 ## Currently
 
