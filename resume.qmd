@@ -1,13 +1,12 @@
 ---
 layout: cv
-title: Isaac Newtons's CV
+title: Tanner Hamblin's cv
 ---
-# Isaac Newton
-Physicist, Mathematician, Cambridge professor.
+# Tanner Hamblin
+Accountant, Financial Analyist, Data Science
 
 <div id="webaddress">
-<a href="isaac@applesdofall.org">isaac@applesdofall.org</a>
-| <a href="http://en.wikipedia.org/wiki/Isaac_Newton">My wikipedia page</a>
+<a href="https://docs.google.com/document/d/1Hg1M4j8iGkRUvvMjZ-6G9dYgAguZ4pyu/edit?usp=drive_link&ouid=104545478070412040670&rtpof=true&sd=true"></a>
 </div>
 
 
