@@ -2,7 +2,7 @@
 layout: cv
 title: Tanner Hamblin's cv
 ---
-# Tanner Hamblin
+# Titles
 Accountant, Financial Analyist, Data Science
 
 <div id="webaddress">
@@ -20,9 +20,9 @@ Working for Farnsworth Company as a Staff Accountant
 
 ### Specialized in
 
-Excel
-Power Bi
-Tableu
+Excel, 
+Power Bi, 
+Tableu, 
 Visual Basic in Excel  
 
 
