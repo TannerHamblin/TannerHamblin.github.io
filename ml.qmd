@@ -1,21 +1,13 @@
 ---
 title: "about me"
-"I am currently pursuing a degree in accounting and a cluster in Data Science at BYU. My academic journey has equipped me with a 
-robust foundation in financial management, tax preparation, and data-driven decision-making.
+subtitle: "I am currently pursuing a degree in accounting and a cluster in Data Science at BYU. My academic journey has equipped me with a robust foundation in financial management, tax preparation, and data-driven decision-making."
 
-Extracurricular Activities:
-Volleyball & Basketball Player
-Active member of BYUI recreational services, demonstrating teamwork, discipline, and strategic thinking both on and off the court.
+Extracurricular Activities: "Volleyball & Basketball Player Active member of BYUI recreational services, demonstrating teamwork, discipline, and strategic thinking both on and off the court."
 
-Skills:
-Financial Analysis & Planning
-Tax Preparation & Compliance
-Data Analysis & Visualization
-Leadership & Teamwork
-Strong Communication Skills 
-I am passionate about integrating my accounting and financial planning expertise with data science to drive informed financial decisions. I am excited to connect with professionals and explore opportunities where I can contribute my skills and continue to grow in the finance industry."
+Skills: "Financial Analysis & Planning, Tax Preparation & Compliance, Data Analysis & Visualization, Leadership & Teamwork,Strong Communication Skills"
 
-subtitle: "my data science portfolio"
+My Passions: "I am passionate about integrating my accounting and financial planning expertise with data science to drive informed financial decisions. I am excited to connect with professionals and explore opportunities where I can contribute my skills and continue to grow in the finance industry."
+
 # use quarto markdown to 
 ---
 
